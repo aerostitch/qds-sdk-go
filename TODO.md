@@ -5,6 +5,12 @@
    - [ ] examples
    - [ ] benchmarks
    - [ ] add a .travis file
- - [ ] Cover all classe possible
+ - [ ] Cover all classes possible
+   - [ ] Scheduler API
+   - [ ] Command API
+   - [ ] Hive Metadata API
+   - [ ] Cluster API
+   - [ ] DbTap API
+   - [ ] Reports API
  - [ ] Write a system to have the credentials into a config file
  - [ ] Write a documentation in the wiki of the repo or in a gh-pages branch

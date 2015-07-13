@@ -9,6 +9,8 @@ I just happened to use QDS and wanted to play with their API in Go.
 For offically supported SDK by Qubole, see their Java and Python SDK here:
 https://github.com/qubole
 
+The documentation about the REST API itself can be found at:
+http://docs.qubole.com/en/latest/rest-api/
 
 NOTE:
  For now this repo just contains a draft of the SDK I just begun. I use the repo
@@ -20,7 +22,10 @@ NOTE:
 
 ### Basic example
 
-```
+Script that will list all the schedules you currently have in the Qubole account
+associated with the token you will provide.
+
+```Go
 package main
 
 import (
