@@ -1,4 +1,4 @@
-package qds_sdk
+package qds
 
 import (
 	"./api"
@@ -12,38 +12,38 @@ import (
 
 const DEBUG = false
 
-const qubole_api_version = "latest"
-const qubole_api_root_uri = "https://api.qubole.com/api/" + qubole_api_version
-const batch_size = 100
+const quboleAPIVersion = "latest"
+const quboleAPIRootURI = "https://api.qubole.com/api/" + quboleAPIVersion
+const batchSize = 100
 
-func buildFinalUri(uri_path *string, per_page uint, page_number uint) *string {
-	final_uri := fmt.Sprint(qubole_api_root_uri, *uri_path, "?per_page=", per_page, "&page=", page_number)
+func buildFinalURI(uriPath *string, perPage uint, pageNumber uint) *string {
+	finalURI := fmt.Sprint(quboleAPIRootURI, *uriPath, "?per_page=", perPage, "&page=", pageNumber)
 	if DEBUG {
-		log.Println("buildFinalUri: " + final_uri)
+		log.Println("buildFinalURI: " + finalURI)
 	}
-	return &final_uri
+	return &finalURI
 }
 
-func SendGetRequest(qubole_token *string, uri_path string, per_page uint, page_number uint) (*[]byte, error) {
-	uri := buildFinalUri(&uri_path, per_page, page_number)
-	return SendHttpRequest(qubole_token, uri, "GET")
+func SendGetRequest(quboleToken *string, uriPath string, perPage uint, pageNumber uint) (*[]byte, error) {
+	uri := buildFinalURI(&uriPath, perPage, pageNumber)
+	return SendHTTPRequest(quboleToken, uri, "GET")
 }
 
-func SendHttpRequest(qubole_token *string, uri *string, request_type string) (*[]byte, error) {
+func SendHTTPRequest(quboleToken *string, uri *string, requestType string) (*[]byte, error) {
 
 	// Checking if the tone
-	if len(*qubole_token) <= 0 {
+	if len(*quboleToken) <= 0 {
 		log.Fatal("You have to provide a token for the qubole API.")
 	}
 
 	if DEBUG {
-		log.Println("SendHttpRequest: " + *uri + " - " + request_type)
+		log.Println("SendHTTPRequest: " + *uri + " - " + requestType)
 	}
 
 	client := &http.Client{Timeout: 30 * time.Second}
-	req, err := http.NewRequest(request_type, *uri, nil)
+	req, err := http.NewRequest(requestType, *uri, nil)
 
-	req.Header.Add("X-AUTH-TOKEN", *qubole_token)
+	req.Header.Add("X-AUTH-TOKEN", *quboleToken)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Accept", "application/json")
 
@@ -52,21 +52,21 @@ func SendHttpRequest(qubole_token *string, uri *string, request_type string) (*[
 	body, err := ioutil.ReadAll(resp.Body)
 
 	if DEBUG {
-		log.Println(fmt.Sprintf("SendHttpRequest: body=%s\nErr=%s", body, err))
+		log.Println(fmt.Sprintf("SendHTTPRequest: body=%s\nErr=%s", body, err))
 	}
 
 	return &body, err
 
 }
 
-func GetAllSchedules(qubole_token *string) *[](api.Schedule) {
+func GetAllSchedules(quboleToken *string) *[](api.Schedule) {
 	var schedules [](api.Schedule)
 
 	var i uint = 1
 
 	for {
 		var data api.Scheduler
-		body, err := SendGetRequest(qubole_token, "/scheduler", batch_size, i)
+		body, err := SendGetRequest(quboleToken, "/scheduler", batchSize, i)
 		err = json.Unmarshal(*body, &data)
 		if err != nil {
 			if DEBUG {

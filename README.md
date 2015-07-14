@@ -34,9 +34,6 @@ import (
   "log"
 )
 
-const qubole_api_version = "latest"
-const qubole_api_root_uri = "https://api.qubole.com/api/" + qubole_api_version
-
 // Those are the arguments you can pass to the script
 var (
   verbose = flag.Bool("verbose", false, "Set a verbose output")
@@ -53,7 +50,7 @@ func main() {
     log.Fatal("You have to provide a token for the qubole API using the --auth-token parameter!")
   }
 
-  schedules := qds_sdk.GetAllSchedules(token)
+  schedules := qds.GetAllSchedules(token)
   log.Printf("****************************************")
   log.Printf("Response: %+v", *schedules)
 
